@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sessions | SkillSwap</title>
+  <meta name="description" content="SkillSwap – exchange skills with fellow students.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="sessions">
+<header class="topbar appbar" id="appHeader"></header>
+<main class="app-main">
+  <span class="eyebrow">LEARNING SESSIONS</span>
+  <h1>Plan your sessions</h1>
+  <p class="muted">Schedule learning sessions with your partners and track what you've completed. Both partners see the session.</p>
+  <div class="two-col sessions-cols">
+    <section class="panel">
+      <h2>New session</h2>
+      <form id="sessionForm">
+        <label for="topic">Topic</label><input id="topic" required maxlength="150" placeholder="e.g. Python loops and functions">
+        <label for="partner">Partner</label>
+        <select id="partner"><option value="">Solo session (no partner)</option></select>
+        <label for="sessionDate">Date &amp; time</label><input id="sessionDate" type="datetime-local">
+        <label for="duration">Duration</label>
+        <select id="duration"><option value="30">30 minutes</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option><option value="180">3 hours</option></select>
+        <button class="btn full" type="submit">Create session</button>
+      </form>
+      <p id="sessionMessage" class="form-message"></p>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Your sessions</h2>
+        <select id="statusFilter" class="compact"><option value="">All</option><option value="planned">Planned</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+      </div>
+      <div id="sessionList">Loading…</div>
+    </section>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/sessions.js"></script>
+</body>
+</html>

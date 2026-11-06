@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register | SkillSwap</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page" data-page="register">
+<a class="brand auth-brand" href="index.html">Skill<span>Swap</span></a>
+<main class="auth-card">
+  <span class="eyebrow">JOIN THE COMMUNITY</span>
+  <h1>Create your account</h1>
+  <p class="muted">Start exchanging skills with fellow students.</p>
+  <form id="registerForm">
+    <label for="name">Full name <small class="muted">(as on LinkedIn, so you can get verified)</small></label><input id="name" required maxlength="100" autocomplete="name" placeholder="Your name">
+    <label for="email">Email</label><input id="email" type="email" required autocomplete="email" placeholder="you@example.com">
+    <label for="password">Password (minimum 8 characters)</label><input id="password" type="password" minlength="8" required autocomplete="new-password" placeholder="Create a password">
+    <button class="btn full" type="submit">Create account</button>
+    <p id="message" class="form-message"></p>
+  </form>
+  <p class="auth-switch">Already registered? <a href="login.html">Login</a></p>
+</main>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

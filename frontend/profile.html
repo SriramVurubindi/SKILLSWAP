@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Profile | SkillSwap</title>
+  <meta name="description" content="SkillSwap – exchange skills with fellow students.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="profile">
+<header class="topbar appbar" id="appHeader"></header>
+<main class="app-main narrow">
+  <span class="eyebrow">YOUR PROFILE</span>
+  <h1>Build your student profile</h1>
+
+  <section class="panel">
+    <form id="profileForm" class="form-grid">
+      <div><label for="name">Full name</label><input id="name" required maxlength="100"></div>
+      <div><label for="college">College</label><input id="college" maxlength="150" placeholder="Your college"></div>
+      <div><label for="branch">Branch</label><input id="branch" maxlength="100" placeholder="e.g. CSE"></div>
+      <div><label for="year">Year</label>
+        <select id="year"><option value="">Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select>
+      </div>
+      <div class="span-2"><label for="linkedin_url">LinkedIn profile link</label>
+        <input id="linkedin_url" type="url" maxlength="255" placeholder="https://www.linkedin.com/in/your-name"></div>
+      <div class="span-2"><label for="bio">About you</label><textarea id="bio" rows="3" maxlength="1000" placeholder="A short introduction"></textarea></div>
+      <div class="span-2">
+        <label class="switch"><input type="checkbox" id="is_public"><span class="slider"></span>
+          <span>Make my profile public (anyone with the link can view it — your email is never shown)</span></label>
+      </div>
+      <div class="span-2 row-actions">
+        <button class="btn" type="submit">Save profile</button>
+        <a id="viewProfile" class="btn btn-outline" href="#">View my profile</a>
+        <button id="copyLink" class="btn btn-outline" type="button" hidden>Copy public link</button>
+      </div>
+    </form>
+    <p id="profileMessage" class="form-message"></p>
+  </section>
+
+  <section class="panel" id="verify">
+    <div class="panel-head">
+      <div><span class="eyebrow">TRUST &amp; SAFETY</span><h2>Verify with LinkedIn</h2></div>
+      <span id="verifyPill" class="pill">Not verified</span>
+    </div>
+    <p class="muted">We ask LinkedIn for your verified name, email and photo, then cross-check them with the details on this profile. Verified students get a badge that other students can see. We never post to LinkedIn and only read your basic profile.</p>
+    <div id="verifyBody"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Add a skill</h2>
+    <form id="skillForm" class="form-grid">
+      <div><label for="skillName">Skill name</label><input id="skillName" required maxlength="80" list="skillSuggestions" placeholder="e.g. Python"><datalist id="skillSuggestions"></datalist></div>
+      <div><label for="skillType">Skill type</label><select id="skillType"><option value="teach">I can teach</option><option value="learn">I want to learn</option></select></div>
+      <div><label for="proficiency">Proficiency</label><select id="proficiency"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
+      <div class="align-end"><button class="btn" type="submit">Add skill</button></div>
+    </form>
+    <p id="skillMessage" class="form-message"></p>
+    <h3 class="sub-head">I can teach</h3><div id="teachList" class="skill-list"></div>
+    <h3 class="sub-head">I want to learn</h3><div id="learnList" class="skill-list"></div>
+  </section>
+</main>
+<script src="js/api.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>
