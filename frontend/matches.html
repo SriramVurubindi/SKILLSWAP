@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find Matches | SkillSwap</title>
+  <meta name="description" content="SkillSwap – exchange skills with fellow students.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="matches">
+<header class="topbar appbar" id="appHeader"></header>
+<main class="app-main">
+  <span class="eyebrow">DISCOVER STUDENTS</span>
+  <h1>Find your learning partner</h1>
+  <p class="muted">Matches are based on complementary teaching and learning skills. Two-way swaps rank first.</p>
+  <div class="filters">
+    <input id="search" type="search" placeholder="Search by name, college or skill">
+    <label class="check"><input type="checkbox" id="mutualOnly"> Two-way swaps only</label>
+    <label class="check"><input type="checkbox" id="verifiedOnly"> LinkedIn verified only</label>
+  </div>
+  <div id="matchList" class="match-grid">Loading matches…</div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/matches.js"></script>
+</body>
+</html>
