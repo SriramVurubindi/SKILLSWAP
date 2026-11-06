@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Messages | SkillSwap</title>
+  <meta name="description" content="SkillSwap – exchange skills with fellow students.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="chat">
+<header class="topbar appbar" id="appHeader"></header>
+<main class="app-main">
+  <span class="eyebrow">MESSAGING</span>
+  <h1>Messages</h1>
+  <p class="muted">You can message students once a learning request between you is accepted.</p>
+  <div class="chat-layout">
+    <aside class="panel chat-people"><h2>Your partners</h2><div id="partnerList">Loading…</div></aside>
+    <section class="panel chat-main">
+      <div id="chatHeader" class="chat-header muted">Select a partner to start chatting.</div>
+      <div id="chatMessages" class="chat-messages"></div>
+      <form id="messageForm" class="chat-form" hidden>
+        <textarea id="messageBody" rows="2" maxlength="3000" required placeholder="Type a message… (Enter to send, Shift+Enter for a new line)"></textarea>
+        <button class="btn" type="submit">Send</button>
+      </form>
+      <p id="chatStatus" class="form-message"></p>
+    </section>
+  </div>
+</main>
+<script src="js/api.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>

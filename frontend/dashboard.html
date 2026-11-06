@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard | SkillSwap</title>
+  <meta name="description" content="SkillSwap – exchange skills with fellow students.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="dashboard">
+<header class="topbar appbar" id="appHeader"></header>
+<main class="app-main">
+  <div class="welcome">
+    <div>
+      <span class="eyebrow">STUDENT DASHBOARD</span>
+      <h1>Welcome, <span id="studentName">student</span> 👋</h1>
+      <p class="muted">Your next learning opportunity is just a match away.</p>
+    </div>
+    <a class="btn" href="matches.html">Find learning partners</a>
+  </div>
+
+  <div class="stats-grid stats-5">
+    <a class="stat" href="profile.html"><span>Teaching skills</span><strong id="teachCount">—</strong></a>
+    <a class="stat" href="profile.html"><span>Skills to learn</span><strong id="learnCount">—</strong></a>
+    <a class="stat" href="chat.html"><span>Connections</span><strong id="connectionCount">—</strong></a>
+    <a class="stat" href="requests.html"><span>Pending requests</span><strong id="pendingCount">—</strong></a>
+    <a class="stat" href="sessions.html"><span>Upcoming sessions</span><strong id="upcomingCount">—</strong></a>
+  </div>
+
+  <div class="two-col">
+    <section class="panel">
+      <div class="panel-head">
+        <div><span class="eyebrow">PROFILE STATUS</span><h2>Profile <span id="completePercent">0</span>% complete</h2></div>
+        <a href="profile.html">Edit profile →</a>
+      </div>
+      <div class="progress"><div id="completeBar" class="progress-bar"></div></div>
+      <p id="profileSummary" class="muted">Loading your profile…</p>
+      <ul id="missingList" class="checklist"></ul>
+    </section>
+    <section class="panel">
+      <div class="panel-head">
+        <div><span class="eyebrow">TRUST</span><h2>LinkedIn verification</h2></div>
+      </div>
+      <div id="linkedinCard" class="muted">Loading…</div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div><span class="eyebrow">COMING UP</span><h2>Your next sessions</h2></div>
+      <a href="sessions.html">All sessions →</a>
+    </div>
+    <div id="upcomingList" class="muted">Loading…</div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><div><span class="eyebrow">DISCOVER</span><h2>What would you like to do?</h2></div></div>
+    <div class="quick-grid">
+      <a class="quick-card" href="profile.html"><b>＋</b><h3>Add your skills</h3><p>Tell others what you can teach and want to learn.</p></a>
+      <a class="quick-card" href="matches.html"><b>✦</b><h3>Find a match</h3><p>Discover students with complementary skills.</p></a>
+      <a class="quick-card" href="roadmap.html"><b>⌁</b><h3>AI learning roadmap</h3><p>Generate a practical plan for a new skill.</p></a>
+    </div>
+  </section>
+</main>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

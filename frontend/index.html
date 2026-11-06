@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSwap | Learn Together</title>
+  <meta name="description" content="SkillSwap – share what you know, learn what you love. A skill exchange platform for students.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+<header class="topbar" id="appHeader"></header>
+<main>
+  <section class="hero">
+    <div>
+      <span class="eyebrow">STUDENT-POWERED LEARNING</span>
+      <h1>Share what you know.<br><span>Learn what you love.</span></h1>
+      <p>Connect with students who can teach the skills you want to learn — and share your own knowledge in return.</p>
+      <div class="actions" id="heroActions">
+        <a class="btn" href="register.html">Create free account</a>
+        <a class="btn btn-outline" href="login.html">Log in</a>
+      </div>
+      <div class="trust">LinkedIn-verified students • AI learning roadmaps • No course fees</div>
+    </div>
+    <div class="hero-card">
+      <div class="mini-label">YOUR NEXT LEARNING PARTNER</div>
+      <div class="avatars">R <span>↔</span> A</div>
+      <h3>Perfect skill exchange</h3>
+      <p>Python ↔ Web Development</p>
+      <div class="match-pill">Mutual learning match</div>
+      <div><span class="badge badge-verified">✓ LinkedIn verified</span></div>
+    </div>
+  </section>
+  <section id="how" class="section">
+    <div class="section-heading"><span class="eyebrow">HOW IT WORKS</span><h2>Learning is better together</h2></div>
+    <div class="feature-grid">
+      <article class="feature"><b>01</b><h3>Create &amp; verify your profile</h3><p>Add the skills you can teach and want to learn, then verify your name with LinkedIn.</p></article>
+      <article class="feature"><b>02</b><h3>Find your match</h3><p>Our matching system finds students with complementary skills — two-way swaps first.</p></article>
+      <article class="feature"><b>03</b><h3>Learn and exchange</h3><p>Send a request, chat with your partner, plan sessions and leave reviews.</p></article>
+    </div>
+  </section>
+</main>
+<footer>© 2026 SkillSwap · Built for student collaboration</footer>
+<script src="js/api.js"></script>
+<script>
+  if (getToken()) {
+    document.getElementById("heroActions").replaceChildren(
+      el("a", {class: "btn", href: "dashboard.html"}, "Go to my dashboard"),
+      el("a", {class: "btn btn-outline", href: "matches.html"}, "Find matches"));
+  }
+</script>
+</body>
+</html>
