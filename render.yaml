@@ -1,0 +1,36 @@
+# Render Blueprint – one web service serves the website AND the API.
+services:
+  - type: web
+    name: skillswap
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend --preload --workers 2 --threads 4 --timeout 60 --bind 0.0.0.0:$PORT app:app
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: FLASK_DEBUG
+        value: "0"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      # Uses your existing Render Postgres (campushub-db). SkillSwap keeps its
+      # tables in a separate "skillswap" schema, so CampusHub data is untouched.
+      # To use Supabase instead, replace these two entries with your Supabase
+      # Session-pooler URL in the Render dashboard (and remove DB_SCHEMA).
+      - key: DATABASE_URL
+        fromDatabase:
+          name: campushub-db
+          property: connectionString
+      - key: DB_SCHEMA
+        value: skillswap
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: LINKEDIN_CLIENT_ID
+        sync: false
+      - key: LINKEDIN_CLIENT_SECRET
+        sync: false
