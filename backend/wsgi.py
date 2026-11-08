@@ -7,6 +7,7 @@ SkillSwap profile. Needs GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.
 import os
 import re
 import secrets
+import time
 from urllib.parse import urlencode
 
 import requests as http
@@ -233,3 +234,100 @@ def add_google_badges(response):
         p["google_verified"] = p.get("student_id", p.get("id")) in verified
     response.set_data(jsonify(data).get_data())
     return response
+
+
+# -------------------- GEMINI ROADMAP (model fallback + clear errors) --------------------
+# gemini-2.5-* models are no longer available to new API keys, so the default is
+# the newest Flash-Lite model, with other current models as automatic fallbacks.
+GEMINI_FALLBACKS = ["gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-3.1-flash-lite"]
+GEMINI_PROBLEMS = {
+    "key": "The Gemini API key was rejected. Create a new key at aistudio.google.com/apikey "
+           "and update GEMINI_API_KEY on Render.",
+    "quota": "Gemini's free quota is used up for the moment. Please try again in a minute.",
+    "model": "None of the configured Gemini models are available to this API key.",
+    "other": "The AI service could not generate a roadmap right now. Please try again.",
+}
+
+
+def gemini_models():
+    first = (os.getenv("GEMINI_MODEL") or "").strip() or GEMINI_FALLBACKS[0]
+    return [first] + [m for m in GEMINI_FALLBACKS if m != first]
+
+
+def gemini_problem(exc):
+    msg = str(exc)
+    low = msg.lower()
+    if "api key" in low or "api_key" in low or "unauthenticated" in low or " 401" in msg or "permission_denied" in low:
+        return "key"
+    if "429" in msg or "quota" in low or "resource_exhausted" in low or "rate limit" in low:
+        return "quota"
+    if "404" in msg or "not found" in low or "not supported" in low or "is not available" in low:
+        return "model"
+    return "other"
+
+
+def ask_gemini(prompt):
+    """Return (model_used, text). Tries each model; raises (problem, model) on failure."""
+    from google import genai
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    problem = "other"
+    for model in gemini_models():
+        try:
+            response = client.models.generate_content(model=model, contents=prompt)
+            return model, (response.text or "")
+        except Exception as exc:
+            problem = gemini_problem(exc)
+            app.logger.warning("Gemini model %s failed (%s): %s", model, problem, exc)
+            if problem == "key":
+                break  # a bad key fails for every model
+    raise RuntimeError(problem)
+
+
+@jwt_required()
+def generate_roadmap_v2():
+    data = request.get_json(silent=True) or {}
+    topic = core.clean(data.get("topic"), 120)
+    level = core.clean(data.get("level"), 30) or "Beginner"
+    goal = core.clean(data.get("goal"), 500)
+    if not topic:
+        return error("Please provide a skill or topic.")
+    if not os.getenv("GEMINI_API_KEY"):
+        return error("Gemini API key is not configured on the server.", 503)
+    prompt = f"""
+Create a practical 4-week learning roadmap for a college student.
+Skill: {topic}
+Current level: {level}
+Goal: {goal or "Build a small project and understand the fundamentals."}
+Use Markdown: a "## Week N: title" heading per week, bullet points for topics
+and practical tasks, and finish with a "## Mini-project" section.
+Keep it realistic for a student. Do not claim the learner has completed anything.
+"""
+    try:
+        model, roadmap = ask_gemini(prompt)
+    except RuntimeError as exc:
+        problem = str(exc)
+        return error(GEMINI_PROBLEMS.get(problem, GEMINI_PROBLEMS["other"]),
+                     429 if problem == "quota" else 502, problem=problem)
+    return jsonify({"topic": topic, "model": model, "roadmap": roadmap or "No roadmap was generated."})
+
+
+app.view_functions["generate_roadmap"] = generate_roadmap_v2  # replaces the old /api/ai/roadmap
+
+_ai_status = {"at": 0, "data": None}
+
+
+@app.get("/api/ai/status")
+def ai_status():
+    """Quick check that the Gemini key and model work (cached for 5 minutes)."""
+    if not os.getenv("GEMINI_API_KEY"):
+        return jsonify({"configured": False, "ok": False, "problem": "no_key"})
+    if _ai_status["data"] and time.time() - _ai_status["at"] < 300:
+        return jsonify(_ai_status["data"])
+    try:
+        model, _text = ask_gemini("Reply with the single word: ready")
+        data = {"configured": True, "ok": True, "model": model}
+    except RuntimeError as exc:
+        data = {"configured": True, "ok": False, "problem": str(exc),
+                "message": GEMINI_PROBLEMS.get(str(exc), GEMINI_PROBLEMS["other"])}
+    _ai_status.update(at=time.time(), data=data)
+    return jsonify(data)

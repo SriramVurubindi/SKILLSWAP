@@ -102,7 +102,7 @@ SECRET_KEY=your-long-random-secret
 JWT_SECRET_KEY=another-long-random-secret
 DATABASE_URL=postgresql://postgres.PROJECT_REF:YOUR_PASSWORD@POOLER_HOST:5432/postgres?sslmode=require
 GEMINI_API_KEY=your-api-key
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.5-flash-lite
 LINKEDIN_CLIENT_ID=from-your-linkedin-app
 LINKEDIN_CLIENT_SECRET=from-your-linkedin-app
 ```
