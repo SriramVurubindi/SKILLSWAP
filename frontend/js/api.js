@@ -82,9 +82,10 @@ function avatar(person, size = ""){
   return box;
 }
 function verifiedBadge(person){
-  if (person.linkedin_verified || person.linkedin_status === "verified")
-    return el("span", {class: "badge badge-verified", title: "Name cross-checked with LinkedIn"}, "✓ LinkedIn verified");
-  return null;
+  const li = person.linkedin_verified || person.linkedin_status === "verified";
+  if (!li && !person.google_verified) return null;
+  const label = li && person.google_verified ? "✓ LinkedIn + Google verified" : li ? "✓ LinkedIn verified" : "✓ Google verified";
+  return el("span", {class: "badge badge-verified", title: "Name cross-checked with a verified account"}, label);
 }
 function ratingText(person){
   if (!person.review_count) return null;
