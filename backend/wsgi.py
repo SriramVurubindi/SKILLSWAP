@@ -5,6 +5,7 @@ Google (OpenID Connect) and we cross-check the Google name and email with the
 SkillSwap profile. Needs GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.
 """
 import os
+import re
 import secrets
 from urllib.parse import urlencode
 
@@ -14,7 +15,27 @@ from flask_jwt_extended import jwt_required
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from sqlalchemy import inspect, text
 
+import app as core
 from app import app, db, error, frontend_url, my_id, names_match, utcnow, User
+
+
+def lenient_linkedin_url(value):
+    """Accept any normal way of pasting a LinkedIn profile link: with or
+    without https/www, country subdomains, the mobile app's share link with
+    ?utm=... at the end, or extra paths like /details/. Saves a clean link."""
+    value = (value or "").strip()
+    if not value:
+        return ""
+    if "lnkd.in" in value.lower():
+        raise ValueError("Short lnkd.in links can't be used. Open your LinkedIn profile and copy the full "
+                         "link (linkedin.com/in/your-name).")
+    m = re.search(r"linkedin\.com/(in|pub)/([^/?#\s]+)", value, re.I)
+    if not m or not 2 <= len(m.group(2)) <= 100:
+        raise ValueError("Paste your LinkedIn profile link, like https://www.linkedin.com/in/your-name")
+    return f"https://www.linkedin.com/{m.group(1).lower()}/{m.group(2)}"
+
+
+core.normalize_linkedin_url = lenient_linkedin_url  # used by PUT /api/profile
 
 AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = os.getenv("GOOGLE_TOKEN_URL", "https://oauth2.googleapis.com/token")
