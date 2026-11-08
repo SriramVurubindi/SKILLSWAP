@@ -133,3 +133,4 @@ select.compact{width:auto;padding:6px 10px}
   .filters{gap:10px}
 }
 @media print{.topbar,form,#roadmapActions,.toast-box,footer{display:none!important}.panel{border:0}.app-main{margin:0}}
+[hidden]{display:none!important}

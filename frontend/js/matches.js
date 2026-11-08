@@ -42,7 +42,7 @@ if (requireLogin()) {
     const q = $("search").value.trim().toLowerCase();
     const list = people.filter(p =>
       (!$("mutualOnly").checked || p.mutual) &&
-      (!$("verifiedOnly").checked || p.linkedin_verified) &&
+      (!$("verifiedOnly").checked || p.linkedin_verified || p.google_verified) &&
       (!q || [p.name, p.college, p.branch, ...p.they_can_teach_me, ...p.i_can_teach_them].join(" ").toLowerCase().includes(q)));
     if (!people.length) {
       container.replaceChildren(el("div", {class: "empty-state"},

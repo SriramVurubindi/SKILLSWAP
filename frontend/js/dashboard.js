@@ -14,20 +14,21 @@ if (requireLogin()) {
       $("profileSummary").textContent = [d.college, d.branch].filter(Boolean).join(" · ") ||
         "Complete these steps so other students can find and trust you:";
       $("missingList").replaceChildren(...(d.completeness.missing.length
-        ? d.completeness.missing.map(m => el("li", {}, el("a", {href: m.includes("LinkedIn") ? "profile.html#verify" : "profile.html"}, m)))
+        ? d.completeness.missing.map(m => el("li", {}, el("a", {href: m.includes("Verify") ? "profile.html#verify" : "profile.html"}, m)))
         : [el("li", {class: "done"}, "Your profile is complete. Nice work!")]));
 
-      const li = $("linkedinCard");
-      if (d.linkedin_status === "verified") {
-        li.replaceChildren(el("p", {}, verifiedBadge(d)),
-          el("p", {class: "muted"}, "Your name has been cross-checked with LinkedIn. Other students see your verified badge."));
-      } else if (d.linkedin_status === "mismatch") {
+      const li = $("verifyCard");
+      const g = await api("/google/status").catch(() => ({status: "unverified"}));
+      if (g.status === "verified") {
+        li.replaceChildren(el("p", {}, verifiedBadge({google_verified: true})),
+          el("p", {class: "muted"}, "Your name has been cross-checked with Google. Other students see your verified badge."));
+      } else if (g.status === "mismatch") {
         li.replaceChildren(el("p", {}, el("span", {class: "pill pill-warn"}, "Name mismatch")),
-          el("p", {class: "muted"}, "The name on your profile doesn't match your LinkedIn name."),
+          el("p", {class: "muted"}, "The name on your profile doesn't match your Google name."),
           el("a", {class: "btn btn-small", href: "profile.html#verify"}, "Fix it"));
       } else {
         li.replaceChildren(el("p", {class: "muted"}, "Verified students get more accepted requests. It takes 30 seconds."),
-          el("a", {class: "btn btn-small", href: "profile.html#verify"}, "Verify with LinkedIn"));
+          el("a", {class: "btn btn-small", href: "profile.html#verify"}, "Verify with Google"));
       }
 
       $("upcomingList").replaceChildren(...(d.upcoming_sessions.length

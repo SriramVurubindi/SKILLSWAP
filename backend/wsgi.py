@@ -37,6 +37,31 @@ def lenient_linkedin_url(value):
 
 core.normalize_linkedin_url = lenient_linkedin_url  # used by PUT /api/profile
 
+
+def completeness_with_google(user, skills):
+    """Profile checklist: same steps as before, but verification is Google."""
+    try:
+        google = db.session.execute(text("SELECT google_status FROM users WHERE id = :id"),
+                                    {"id": user.id}).scalar()
+    except Exception:
+        db.session.rollback()
+        google = None
+    checks = [
+        ("Add your college", bool(user.college)),
+        ("Add your branch", bool(user.branch)),
+        ("Select your year", bool(user.year)),
+        ("Write a short bio", bool(user.bio)),
+        ("Add a skill you can teach", any(s["type"] == "teach" for s in skills)),
+        ("Add a skill you want to learn", any(s["type"] == "learn" for s in skills)),
+        ("Verify with Google", google == "verified"),
+    ]
+    done = sum(1 for _, ok in checks if ok)
+    return {"percent": round(done * 100 / len(checks)),
+            "missing": [label for label, ok in checks if not ok]}
+
+
+core.profile_completeness = completeness_with_google  # used by /api/profile and /api/dashboard
+
 AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 TOKEN_URL = os.getenv("GOOGLE_TOKEN_URL", "https://oauth2.googleapis.com/token")
 USERINFO_URL = os.getenv("GOOGLE_USERINFO_URL", "https://openidconnect.googleapis.com/v1/userinfo")
