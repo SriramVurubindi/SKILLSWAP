@@ -1,12 +1,5 @@
 -- SkillSwap database schema (Supabase PostgreSQL)
 --
--- You normally do NOT need to run this: the Flask app creates these tables
--- automatically on startup (db.create_all) and adds any new columns to an
--- older database. This file documents the schema and can be pasted into the
--- Supabase SQL Editor if you prefer to create the tables by hand.
---
--- Tables: users, skills, user_skills, match_requests, messages, sessions, reviews
-
 CREATE TABLE IF NOT EXISTS skills (
 	id SERIAL NOT NULL, 
 	name VARCHAR(80) NOT NULL, 
